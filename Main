@@ -1,0 +1,63 @@
+#include"pch.h"
+#include<iostream>
+#include<string>
+
+
+using namespace std;
+class PhoneCall
+{
+	friend ostream& operator<<(ostream&, const PhoneCall&);
+	friend istream& operator>>(istream&, PhoneCall&);
+
+private:
+	string callNum;
+	int callMinutes;
+	double ratePerMinute;
+public:
+	int operator==(PhoneCall);
+};
+
+ostream& operator<<(ostream& out, const PhoneCall& call)
+{
+	out << "PhoneCall #" << call.callNum << " " <<
+		call.callMinutes << " minutes at $" <<
+		call.ratePerMinute << " per minute" << endl;
+	return out;
+}
+istream& operator>>(istream& in, PhoneCall& call)
+{
+	cout << "Enter call number ";
+	in >> call.callNum;
+	cout << "Enter minutes ";
+	in >> call.callMinutes;
+	cout << "Rate per minute ";
+	in >> call.ratePerMinute;
+	return in;
+}
+int PhoneCall::operator==(PhoneCall call)
+{
+	int temp = 0;
+	if (callNum == call.callNum)
+		temp = 1;
+	return temp;
+}
+int main()
+{
+	const int CALLS = 10;
+	PhoneCall pc[CALLS];
+	int x, y;
+	cin >> pc[0];
+	for (x = 1; x < CALLS; ++x)
+	{
+		cin >> pc[x];
+		for (y = x - 1; y >= 0; --y)
+			if (pc[x] == pc[y])
+			{
+				cout << "Call already made to " << pc[x] <<
+					endl << " Try again " << endl;
+				--x;
+			}
+	}
+	return 0;
+}
+
